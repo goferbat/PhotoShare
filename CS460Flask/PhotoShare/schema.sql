@@ -32,7 +32,7 @@ CREATE TABLE Photos
 (
   pid int(4)  AUTO_INCREMENT,
   uid int(4),
-  imgdata longblob,
+  imgdata LONGBLOB,
   caption VARCHAR(255),
   aid int(4),
   INDEX upid_idx (uid),
@@ -57,15 +57,18 @@ CREATE TABLE userAlbum(
     );
 
 CREATE TABLE Comments(
-    photouid INT(4) NOT NULL,
+    cid INT(4) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     uid INT(4),
-    email VARCHAR(255),
-    pid INT(4) NOT NULL,
     content VARCHAR(255),
-    FOREIGN KEY (photouid) REFERENCES Users(uid),
-    FOREIGN KEY (uid) REFERENCES Users(uid) on delete cascade,
-    FOREIGN KEY (pid) REFERENCES photos(pid) on delete cascade
+    FOREIGN KEY (uid) REFERENCES Users(uid) on delete cascade
     );
+
+CREATE TABLE photoComments (
+   cid INT(4),
+   pid INT(4),
+   CONSTRAINT comment_photo_fk FOREIGN KEY (cid) REFERENCES Comments(cid),
+   CONSTRAINT comment_photo_fk_2 FOREIGN KEY (pid) REFERENCES Photos(pid)
+);
 
 
 CREATE TABLE photoTags(
